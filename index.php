@@ -6,8 +6,7 @@ require 'Mobile_Detect.php';
 $maxmindReader = new \MaxMind\Db\Reader('GeoLite2-ASN.mmdb');
 $detect = new Mobile_Detect;
 
-//$userIp = preg_replace('/[^\da-f.:]/', '', isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
-$userIp = '93.120.146.127';
+$userIp = preg_replace('/[^\da-f.:]/', '', isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
 $ASNArray = $maxmindReader->get($userIp);
 $serverRequestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 $userIpASN = isset($ASNArray['autonomous_system_number'], $ASNArray['autonomous_system_organization']) ? ($ASNArray['autonomous_system_number'] . ' ' . $ASNArray['autonomous_system_organization']) : '';
@@ -34,8 +33,7 @@ if ( $serverHttpHost != $redirectDomain ) {
 
         if ( !$detect->isMobile() ) {
 
-            echo 'Location: https://' . $redirectDomain . $serverRequestUri;
-            //header('Location: https://' . $redirectDomain . $serverRequestUri, true, 301);
+            header('Location: https://' . $redirectDomain . $serverRequestUri, true, 301);
             exit;
 
         } else {
