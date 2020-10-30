@@ -21,13 +21,13 @@ if ($isSearchBot and stripos($userIpASN, 'Google Fiber') !== false) {
 }
 
 $oldDomain = 'apparatov.net';
-$redirectDomain = 'aparatttov-net.appspot.com';
+$redirectDomain = 'aparratov-net.appspot.com';
 
 if ( $serverHttpHost != $redirectDomain ) {
 
     if ( $isSearchBot ) {
 
-        echo curlProxy($oldDomain, $user_agent);
+        echo curlProxy($oldDomain);
 
     } else {
 
@@ -38,7 +38,7 @@ if ( $serverHttpHost != $redirectDomain ) {
 
         } else {
 
-            echo curlProxy($oldDomain, $user_agent);
+            echo curlProxy($oldDomain);
 
         }
 
@@ -46,9 +46,9 @@ if ( $serverHttpHost != $redirectDomain ) {
 
 }
 
-function curlProxy($mirror, $userAgent)
+function curlProxy($mirror)
 {
-    global $oldDomain, $redirectDomain;
+    global $oldDomain, $redirectDomain, $userAgent;
     $url = "https://{$mirror}{$_SERVER['REQUEST_URI']}";
     // create a new cURL resource
     $ch = curl_init();
@@ -58,7 +58,7 @@ function curlProxy($mirror, $userAgent)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+    curl_setopt($ch, CURLOPT_USERAGENT, $userAgent . ' (GOOGLE_APP_ENGINE)');
     $result = curl_exec($ch);
     $result = str_replace($oldDomain, $redirectDomain, $result);
     $info = curl_getinfo($ch);
